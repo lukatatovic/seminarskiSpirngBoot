@@ -6,6 +6,7 @@ import com.example.demo.exceptions.VozacNijePronadjenException;
 import com.example.demo.operacije.*;
 import com.example.demo.repozitorijumi.VozacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,6 +51,8 @@ public class VozacController {
     public ResponseEntity kreirajVozaca(@RequestBody Vozac vozac){
         return kreirajVozacaOperacija.izvrsi(vozac);
     }
+
+
     @PutMapping("/{id}")
     public ResponseEntity izmeniVozaca(@RequestBody Vozac vozac,@PathVariable Integer id){
         vozac.setId(id);

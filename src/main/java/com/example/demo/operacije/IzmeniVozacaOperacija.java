@@ -6,6 +6,8 @@ import com.example.demo.exceptions.NijeValidnoException;
 import com.example.demo.exceptions.VozacNijePronadjenException;
 import com.example.demo.repozitorijumi.VozacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ public class IzmeniVozacaOperacija implements GenerickaOperacija<Vozac, Response
     @Autowired
     private VozacRepository vozacRepository;
     @Override
+    @CachePut(value = "vozacCache",key = "#vozac.getId()")
     public ResponseEntity izvrsi(Vozac vozac) {
         Optional<Vozac>optionalVozac=vozacRepository.findById(vozac.getId());
         if(optionalVozac.isEmpty()){
@@ -23,7 +26,7 @@ public class IzmeniVozacaOperacija implements GenerickaOperacija<Vozac, Response
         }
         validacija(vozac);
         vozacRepository.save(vozac);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(vozac);
     }
 
     private void validacija(Vozac vozac) {

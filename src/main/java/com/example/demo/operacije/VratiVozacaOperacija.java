@@ -6,6 +6,7 @@ import com.example.demo.domen.VozacDTO;
 import com.example.demo.exceptions.VozacNijePronadjenException;
 import com.example.demo.repozitorijumi.VozacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class VratiVozacaOperacija implements GenerickaOperacija<Integer, VozacDT
     @Autowired
     private VozacRepository vozacRepository;
     @Override
+    @Cacheable
     public ResponseEntity<VozacDTO> izvrsi(Integer id) {
         Optional<Vozac> vozac=vozacRepository.findById(id);
         if(vozac.isEmpty()){
